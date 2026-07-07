@@ -1,0 +1,108 @@
+name: Update Equipment Browser
+
+on:
+  schedule:
+    - cron: "7 0 * * *"   # Runs every day on 00:07
+  workflow_dispatch:           # Allows manual trigger from GitHub UI
+
+jobs:
+  update-html:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write          # Needed to commit back to repo
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install pandas openpyxl
+          
+      - name: Cron heartbeat log
+        run: |
+          echo "Workflow executed at:"
+          date -u
+
+      - name: Download latest Excel from OneDrive
+        run: |
+          curl -L "${{ secrets.ONEDRIVE_EXCEL_URL }}" \
+          -o "IIT-M_L&E_Web&Visit_Data_OG.xlsx"
+
+      - name: Verify Excel downloaded correctly
+        run: |
+          ls -lh "IIT-M_L&E_Web&Visit_Data_OG.xlsx"
+          file "IIT-M_L&E_Web&Visit_Data_OG.xlsx"
+
+      - name: Generate HTML
+        run: |
+          python regenerate_browser.py
+
+      - name: Commit updated HTML
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add index.html
+          git diff --cached --quiet || git commit -m "Auto update: $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push
+name: Update Equipment Browser
+
+on:
+  schedule:
+    - cron: "7 0 * * *"   # Runs every day on 00:07
+  workflow_dispatch:           # Allows manual trigger from GitHub UI
+
+jobs:
+  update-html:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write          # Needed to commit back to repo
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install pandas openpyxl
+          
+      - name: Cron heartbeat log
+        run: |
+          echo "Workflow executed at:"
+          date -u
+
+      - name: Download latest Excel from OneDrive
+        run: |
+          curl -L "${{ secrets.ONEDRIVE_EXCEL_URL }}" \
+          -o "IIT-M_L&E_Web&Visit_Data_OG.xlsx"
+
+      - name: Verify Excel downloaded correctly
+        run: |
+          ls -lh "IIT-M_L&E_Web&Visit_Data_OG.xlsx"
+          file "IIT-M_L&E_Web&Visit_Data_OG.xlsx"
+
+      - name: Generate HTML
+        run: |
+          python regenerate_browser.py
+
+      - name: Commit updated HTML
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add index.html
+          git diff --cached --quiet || git commit -m "Auto update: $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push
