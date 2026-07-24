@@ -1,0 +1,105 @@
+name: Update Equipment Browser
+
+on:
+  schedule:
+    - cron: "7 0 * * *"   # Runs every day on 00:07
+  workflow_dispatch:           # Allows manual trigger from GitHub UI
+
+jobs:
+  update-html:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write          # Needed to commit back to repo
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install pandas openpyxl requests
+
+      - name: Cron heartbeat log
+        run: |
+          echo "Workflow executed at:"
+          date -u
+
+      # Requires the SharePoint link to be set to
+      # "Anyone with the link (no sign-in required)".
+      # curl fails with 403 on SharePoint business tenants because it
+      # doesn't persist the auth cookies across the redirect chain.
+      # Python requests handles cookies automatically, which fixes it.
+      - name: Download latest Excel from SharePoint
+        run: |
+          python - << 'EOF'
+          import os, sys, zipfile, requests
+
+          url    = "${{ secrets.ONEDRIVE_EXCEL_URL }}"
+          output = "IIT-M_L&E_Web&Visit_Data_OG.xlsx"
+
+          session = requests.Session()
+          session.headers.update({
+              "User-Agent": (
+                  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                  "AppleWebKit/537.36 (KHTML, like Gecko) "
+                  "Chrome/124.0.0.0 Safari/537.36"
+              ),
+              "Accept": (
+                  "text/html,application/xhtml+xml,application/xml;q=0.9,"
+                  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,"
+                  "*/*;q=0.8"
+              ),
+              "Accept-Language": "en-US,en;q=0.9",
+          })
+
+          print(f"Downloading from SharePoint…")
+          r = session.get(url, allow_redirects=True, timeout=120)
+          print(f"HTTP {r.status_code}  ({len(r.content):,} bytes received)")
+
+          if r.status_code == 403:
+              sys.exit(
+                  "ERROR: 403 Forbidden.\n"
+                  "The SharePoint sharing link still requires sign-in.\n"
+                  "Fix: open the file in SharePoint → Share → change permission\n"
+                  "     to 'Anyone with the link (no sign-in required)', then retry."
+              )
+
+          r.raise_for_status()
+
+          with open(output, "wb") as f:
+              f.write(r.content)
+
+          size = os.path.getsize(output)
+          if size < 1024 or not zipfile.is_zipfile(output):
+              preview = r.content[:300].decode("utf-8", errors="replace")
+              sys.exit(
+                  f"ERROR: Downloaded file is not a valid xlsx ({size} bytes).\n"
+                  f"Content preview: {preview!r}"
+              )
+
+          print(f"✓ Saved {size:,} bytes → {output}")
+          EOF
+
+      - name: Verify Excel downloaded correctly
+        run: |
+          ls -lh "IIT-M_L&E_Web&Visit_Data_OG.xlsx"
+          file "IIT-M_L&E_Web&Visit_Data_OG.xlsx"
+
+      - name: Generate HTML
+        run: |
+          python regenerate_browser.py
+
+      - name: Commit updated HTML
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add index.html
+          git diff --cached --quiet || git commit -m "Auto update: $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push
