@@ -53,7 +53,7 @@ OUTPUT_FILE = "index.html"
 # Leave ASSISTANT_PROXY_URL empty to ship the page with the assistant
 # disabled (it will show a friendly "not configured" message instead of
 # erroring).
-ASSISTANT_PROXY_URL = "https://iitm-equipment-assistant.gemini-ai-studio-api.workers.dev"
+ASSISTANT_PROXY_URL = "https://iitm-equipment-assistant.dharman.workers.dev"
 
 DEPT_MAP = {
     'Department of Physics': 'Physics',
