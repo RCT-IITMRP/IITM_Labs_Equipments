@@ -459,7 +459,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     </div>
     <!-- ── END CHANGE 2 ───────────────────────────────────────────────────── -->
 
-    <select id="dept-filter"><option value="">All Departments</option></select>
+    <select id="dept-filter"><option value="">IITM Depts./IITMRP Clients</option></select>
 
     <!-- ════════════════════════════════════════════════════════════════════════
          CHANGE 3: ALL LABORATORIES FILTER — COMMENTED OUT
