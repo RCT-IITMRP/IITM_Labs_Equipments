@@ -399,7 +399,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     </div>
     <!-- ── END CHANGE 2 ───────────────────────────────────────────────────── -->
 
-    <select id="dept-filter"><option value="">All Departments</option></select>
+    <select id="dept-filter"><option value="">IITM Dept/RP Facilities</option></select>
     <select id="entity-filter"><option value="">All Entity Types</option></select>
 
     <!-- ════════════════════════════════════════════════════════════════════════
