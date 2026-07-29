@@ -372,7 +372,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     </div>
     <div class="header-stats">
       <div class="stat-pill"><span class="num" id="stat-total">-</span><span class="lbl">Equipment</span></div>
-      <div class="stat-pill"><span class="num" id="stat-depts">-</span><span class="lbl">IITM Dept / RP Facilities</span></div>
+      <div class="stat-pill"><span class="num" id="stat-depts">-</span><span class="lbl">IITM Dept / RP Client</span></div>
       <div class="stat-pill"><span class="num" id="stat-labs">-</span><span class="lbl">Laboratories</span></div>
     </div>
   </div>
