@@ -341,7 +341,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
       </div>
 
       <div class="logo-text">
-        <h1>IIT Madras/IITM Research Park Ecosystem(Beta) — Labs &amp; Equipments</h1>
+        <h1>IIT Madras/IITM Research Park Ecosystem(Beta) — Labs &amp; Equipment</h1>
         <p>Research Facilities Directory</p>
       </div>
     </div>
