@@ -201,6 +201,58 @@
   .ai-disclaimer { font-size: 12px; color: var(--text-muted); padding: 8px 14px 12px; text-align: center; flex-shrink: 0; line-height: 1.5; }
   .ai-disclaimer a { color: var(--gold); }
 
+  /* "Contact RCT Team" triggers — open the contact form (no address on the page) */
+  .contact-rct-btn { display: inline-block; background: var(--gold); color: var(--navy); border: none; border-radius: 999px; padding: 1px 12px; font-family: inherit; font-size: 12px; font-weight: 700; line-height: 1.7; cursor: pointer; vertical-align: baseline; white-space: nowrap; }
+  .contact-rct-btn:hover { background: var(--gold-light); }
+  .contact-rct-btn:focus-visible { outline: 2px solid white; outline-offset: 2px; }
+  .contact-link-btn { background: none; border: none; padding: 0; font: inherit; color: var(--gold); text-decoration: underline; cursor: pointer; }
+
+  /* Contact form modal — sits above the AI panel (z 300) */
+  #contact-backdrop { position: fixed; inset: 0; z-index: 400; background: rgba(10,39,71,0.55); display: flex; align-items: center; justify-content: center; padding: 16px;
+    visibility: hidden; opacity: 0; transition: opacity 0.2s ease, visibility 0s linear 0.2s; }
+  #contact-backdrop.show { visibility: visible; opacity: 1; transition: opacity 0.2s ease, visibility 0s linear 0s; }
+  #contact-backdrop [hidden] { display: none !important; }
+  .contact-dialog { width: 100%; max-width: 480px; max-height: calc(100vh - 32px); overflow-y: auto; background: var(--cream); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 12px 48px rgba(10,39,71,0.35); transform: translateY(12px) scale(0.98); transition: transform 0.2s ease; }
+  #contact-backdrop.show .contact-dialog { transform: none; }
+  .contact-head { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; gap: 10px; padding: 14px 16px; color: white; background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%); border-radius: var(--radius) var(--radius) 0 0; }
+  .contact-head-text { flex: 1; }
+  .contact-head h2 { font-size: 15px; font-weight: 700; }
+  .contact-head p { font-size: 11px; color: rgba(255,255,255,0.65); margin-top: 1px; }
+  .contact-body { padding: 16px; }
+  .contact-hint { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+  .contact-field { margin-bottom: 12px; }
+  .contact-field label { display: block; font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .req { color: #B91C1C; font-weight: 700; }
+  .contact-field .opt { font-weight: 400; color: var(--text-muted); }
+  .contact-field input, .contact-field textarea { width: 100%; background: white; border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; font-family: inherit; font-size: 14px; color: var(--text); outline: none; }
+  .contact-field textarea { min-height: 110px; resize: vertical; }
+  .contact-field input:focus, .contact-field textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,149,58,0.18); }
+  .contact-field [aria-invalid="true"] { border-color: #DC2626; box-shadow: 0 0 0 3px rgba(220,38,38,0.12); }
+  .contact-hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+  #contact-turnstile { margin: 4px 0 12px; }
+  .contact-status { font-size: 13px; line-height: 1.45; border-radius: 8px; padding: 9px 12px; margin-bottom: 12px; }
+  .contact-status.error { background: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; }
+  .contact-actions { display: flex; justify-content: flex-end; gap: 8px; }
+  .contact-cancel { background: white; color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 9px 16px; font-family: inherit; font-size: 13px; cursor: pointer; }
+  .contact-cancel:hover { background: var(--hover); }
+  .contact-submit { display: inline-flex; align-items: center; gap: 8px; background: var(--navy); color: white; border: none; border-radius: 8px; padding: 9px 18px; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .contact-submit:hover { background: var(--navy-mid); }
+  .contact-submit:disabled, .contact-cancel:disabled, .ai-close:disabled { opacity: 0.6; cursor: default; }
+  .contact-spinner { display: none; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.35); border-top-color: white; border-radius: 50%; animation: contact-spin 0.8s linear infinite; }
+  .contact-submit.loading .contact-spinner { display: inline-block; }
+  @keyframes contact-spin { to { transform: rotate(360deg); } }
+  .contact-success { text-align: center; padding: 28px 20px; }
+  .contact-tick { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 50%; background: #D1FAE5; color: #065F46; margin-bottom: 12px; }
+  .contact-success h3 { font-size: 16px; color: var(--navy); margin-bottom: 6px; }
+  .contact-success p { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; }
+  body.contact-open { overflow: hidden; }
+  @media (max-width: 700px) {
+    #contact-backdrop { padding: 0; align-items: stretch; }
+    .contact-dialog { max-width: none; max-height: none; height: 100%; border: none; border-radius: 0; }
+    .contact-head { border-radius: 0; }
+    .contact-field input, .contact-field textarea { font-size: 16px; } /* no iOS zoom-on-focus */
+  }
+
   @media (max-width: 700px) { #ai-panel { right: 12px; left: 12px; width: auto; top: calc(var(--header-h, 130px) + 6px); bottom: 80px; } #ai-fab { right: 16px; bottom: 16px; } }
 </style>
 </head>
@@ -228,7 +280,7 @@
   </div>
   <!-- Contact guidance info bar -->
   <div class="header-info-bar">
-    For additional details, please reach out to us at <a href="mailto:rct@respark.iitm.ac.in">rct@respark.iitm.ac.in</a>. If PI name/number is available you can contact the PI. Please prefix <span class="link-color">2257</span> before the 4 digit extension number.
+    For additional details, please <button type="button" class="contact-rct-btn" data-contact-open>Contact RCT Team</button>. If PI name/number is available you can contact the PI. Please prefix <span class="link-color">2257</span> before the 4 digit extension number.
   </div>
   <div class="filter-bar">
 
@@ -311,7 +363,59 @@
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
     </button>
   </div>
-  <div class="ai-disclaimer">AI-generated suggestions — please confirm availability with the listed contact or the Research Collaboration Team at <a href="mailto:rct@respark.iitm.ac.in">rct@respark.iitm.ac.in</a>.</div>
+  <div class="ai-disclaimer">AI-generated suggestions — please confirm availability with the listed contact or <button type="button" class="contact-link-btn" data-contact-open>contact the Research Collaboration Team</button>.</div>
+</div>
+
+<!-- Contact RCT Team — form modal. Submissions go to the Worker's /contact
+     route, which emails the team; no email address appears in this page. -->
+<div id="contact-backdrop">
+  <div class="contact-dialog" role="dialog" aria-modal="true" aria-labelledby="contact-title" aria-describedby="contact-desc">
+    <div class="contact-head">
+      <div class="contact-head-text">
+        <h2 id="contact-title">Contact RCT Team</h2>
+        <p id="contact-desc">Research Collaboration Team · we'll reply by email</p>
+      </div>
+      <button type="button" class="ai-close" id="contact-close" aria-label="Close contact form">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <form id="contact-form" class="contact-body" novalidate>
+      <p class="contact-hint">Fields marked <span class="req">*</span> are required.</p>
+      <div class="contact-field">
+        <label for="contact-name">Name <span class="req" aria-hidden="true">*</span></label>
+        <input type="text" id="contact-name" name="name" maxlength="100" autocomplete="name" required>
+      </div>
+      <div class="contact-field">
+        <label for="contact-email">Email <span class="req" aria-hidden="true">*</span></label>
+        <input type="email" id="contact-email" name="email" maxlength="254" autocomplete="email" required>
+      </div>
+      <div class="contact-field">
+        <label for="contact-company">Company Name <span class="req" aria-hidden="true">*</span></label>
+        <input type="text" id="contact-company" name="company" maxlength="150" autocomplete="organization" required>
+      </div>
+      <div class="contact-field">
+        <label for="contact-message">Message <span class="opt">(optional)</span></label>
+        <textarea id="contact-message" name="message" maxlength="5000" rows="5" placeholder="Equipment or facility you're interested in, timelines, etc."></textarea>
+      </div>
+      <!-- Honeypot: hidden from people, often filled in by bots -->
+      <div class="contact-hp" aria-hidden="true">
+        <label for="contact-website">Leave this field empty</label>
+        <input type="text" id="contact-website" name="website" tabindex="-1" autocomplete="off">
+      </div>
+      <div id="contact-turnstile"></div>
+      <div class="contact-status error" id="contact-error" role="alert" hidden></div>
+      <div class="contact-actions">
+        <button type="button" class="contact-cancel" id="contact-cancel">Cancel</button>
+        <button type="submit" class="contact-submit" id="contact-submit"><span class="contact-spinner" aria-hidden="true"></span><span class="contact-submit-label">Submit</span></button>
+      </div>
+    </form>
+    <div class="contact-success" id="contact-success" role="status" hidden>
+      <div class="contact-tick"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <h3>Thank you — your message has been sent</h3>
+      <p>The RCT team will get back to you at the email address you provided.</p>
+      <button type="button" class="contact-submit" id="contact-done">Close</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -328,6 +432,12 @@ const filterOptions = {"departments":["Aerospace Engineering","Applied Mechanics
 /** URL of the Cloudflare Worker proxy that holds the Gemini API key server-side.
  *  This URL is NOT a secret — safe to commit publicly. Leave empty to disable. */
 const ASSISTANT_PROXY_URL = "https://iitm-equipment-assistant.dharman.workers.dev";
+
+/** "Contact RCT Team" form: the Worker's /contact route and the public
+ *  Turnstile site key. Neither is a secret; the destination address is held
+ *  by the Worker only. The form stays disabled while either is empty. */
+const CONTACT_PROXY_URL  = "https://iitm-equipment-assistant.dharman.workers.dev/contact";
+const TURNSTILE_SITE_KEY = "0x4AAAAAAEzmCQPjutTIGuHo";
 
 
 /* ============================================================================
@@ -1134,6 +1244,221 @@ async function aiSend() {
 
 
 /* ============================================================================
+   CONTACT RCT TEAM — form modal
+   Posts to the Worker's /contact route, which verifies Turnstile, rate-limits,
+   re-validates and emails the team. The destination address never reaches
+   this page.
+   ============================================================================ */
+
+/** Field limits — keep in sync with LIMITS in iitm-worker/contact.js. */
+const CONTACT_LIMITS   = { name: 100, email: 254, company: 150, message: 5000 };
+const CONTACT_EMAIL_RE = /^[A-Za-z0-9.!#$%&'*+\/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/;
+const CONTACT_TLD_RE   = /\.(?:[A-Za-z]{2,63}|xn--[A-Za-z0-9-]{1,59})$/;
+
+let contactIsOpen      = false;
+let contactBusy        = false;
+let contactToken       = '';     // current Turnstile token (single-use)
+let contactWidgetId    = null;   // Turnstile widget id once rendered
+let contactTurnstileJs = null;   // promise for the lazily loaded Turnstile script
+let contactReturnFocus = null;   // element to refocus when the modal closes
+let contactAutoClose   = null;   // timer that closes the modal after success
+
+const contactEl = id => document.getElementById('contact-' + id);
+
+function contactEmailValid(email) {
+  if (email.length > CONTACT_LIMITS.email || !CONTACT_EMAIL_RE.test(email) || !CONTACT_TLD_RE.test(email)) return false;
+  const local = email.slice(0, email.lastIndexOf('@'));
+  return local.length <= 64 && !local.startsWith('.') && !local.endsWith('.') && !local.includes('..');
+}
+
+/** First problem with the trimmed values, as [field, message], or null. */
+function contactValidate(d) {
+  if (!d.name) return ['name', 'Please enter your name.'];
+  if (d.name.length > CONTACT_LIMITS.name) return ['name', `Name must be ${CONTACT_LIMITS.name} characters or fewer.`];
+  if (!d.email) return ['email', 'Please enter your email address.'];
+  if (!contactEmailValid(d.email)) return ['email', 'Please enter a valid email address.'];
+  if (!d.company) return ['company', 'Please enter your company name.'];
+  if (d.company.length > CONTACT_LIMITS.company) return ['company', `Company name must be ${CONTACT_LIMITS.company} characters or fewer.`];
+  if (d.message.length > CONTACT_LIMITS.message) return ['message', `Message must be ${CONTACT_LIMITS.message} characters or fewer.`];
+  return null;
+}
+
+/** Turnstile is loaded only when the form is first opened. */
+function contactLoadTurnstile() {
+  if (window.turnstile) return Promise.resolve();
+  if (!contactTurnstileJs) {
+    contactTurnstileJs = new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+      s.onload = resolve;
+      s.onerror = () => { contactTurnstileJs = null; s.remove(); reject(new Error('Turnstile failed to load')); };
+      document.head.appendChild(s);
+    });
+  }
+  return contactTurnstileJs;
+}
+
+function contactRenderTurnstile() {
+  if (!TURNSTILE_SITE_KEY || contactWidgetId !== null) return;
+  contactLoadTurnstile().then(() => {
+    if (contactWidgetId !== null) return;
+    contactWidgetId = window.turnstile.render('#contact-turnstile', {
+      sitekey: TURNSTILE_SITE_KEY,
+      action: 'contact',
+      theme: 'light',
+      size: 'flexible',
+      callback: token => { contactToken = token; },
+      'expired-callback': () => { contactToken = ''; },
+      'timeout-callback': () => { contactToken = ''; },
+      'error-callback': () => { contactToken = ''; },
+    });
+  }).catch(() => {
+    contactShowError('The verification check could not load. Please check your connection (or pause content blockers) and reopen this form.');
+  });
+}
+
+/** Tokens are single-use: get a fresh one after every submission attempt. */
+function contactResetTurnstile() {
+  contactToken = '';
+  if (window.turnstile && contactWidgetId !== null) window.turnstile.reset(contactWidgetId);
+}
+
+function contactClearInvalid() {
+  document.querySelectorAll('#contact-form [aria-invalid]').forEach(el => el.removeAttribute('aria-invalid'));
+}
+
+function contactClearError() {
+  contactEl('error').hidden = true;
+  contactEl('error').textContent = '';
+  contactClearInvalid();
+}
+
+/** Show `msg` above the buttons; mark and focus the offending input, if any. */
+function contactShowError(msg, field) {
+  const box = contactEl('error');
+  box.textContent = msg;
+  box.hidden = false;
+  contactClearInvalid();
+  const input = field && contactEl(field);
+  if (input && (input.tagName === 'INPUT' || input.tagName === 'TEXTAREA')) {
+    input.setAttribute('aria-invalid', 'true');
+    input.focus();
+  }
+}
+
+function contactSetBusy(busy) {
+  contactBusy = busy;
+  const btn = contactEl('submit');
+  btn.disabled = busy;
+  btn.classList.toggle('loading', busy);
+  btn.querySelector('.contact-submit-label').textContent = busy ? 'Sending…' : 'Submit';
+  contactEl('cancel').disabled = busy;
+  contactEl('close').disabled = busy;
+  contactEl('form').setAttribute('aria-busy', busy ? 'true' : 'false');
+}
+
+function contactOpen(ev) {
+  if (contactIsOpen) return;
+  contactIsOpen = true;
+  contactReturnFocus = (ev && ev.currentTarget) || document.activeElement;
+  clearTimeout(contactAutoClose);
+  contactEl('form').hidden = false;
+  contactEl('success').hidden = true;
+  contactEl('backdrop').classList.add('show');
+  document.body.classList.add('contact-open');
+  contactRenderTurnstile();
+  requestAnimationFrame(() => contactEl('name').focus());
+}
+
+/** Close unless a submission is in flight. Typed values are kept, so an
+ *  accidental close loses nothing (a successful send resets the form). */
+function contactClose() {
+  if (!contactIsOpen || contactBusy) return;
+  contactIsOpen = false;
+  clearTimeout(contactAutoClose);
+  contactEl('backdrop').classList.remove('show');
+  document.body.classList.remove('contact-open');
+  if (contactReturnFocus && document.contains(contactReturnFocus)) contactReturnFocus.focus();
+}
+
+function contactShowSuccess() {
+  contactEl('form').reset();
+  contactClearError();
+  contactEl('form').hidden = true;
+  contactEl('success').hidden = false;
+  contactEl('done').focus();
+  contactAutoClose = setTimeout(contactClose, 6000);
+}
+
+async function contactSubmit(ev) {
+  ev.preventDefault();
+  if (contactBusy) return;
+  const d = {
+    name:    contactEl('name').value.trim(),
+    email:   contactEl('email').value.trim(),
+    company: contactEl('company').value.trim(),
+    message: contactEl('message').value.trim(),
+    website: contactEl('website').value,          // honeypot — people never see it
+  };
+  const problem = contactValidate(d);
+  if (problem) { contactShowError(problem[1], problem[0]); return; }
+  if (!CONTACT_PROXY_URL || !TURNSTILE_SITE_KEY) {
+    contactShowError("The contact form isn't available yet. Please try again later.");
+    return;
+  }
+  if (!contactToken) {
+    contactShowError('Please complete the verification check above, then submit again.');
+    return;
+  }
+
+  contactClearError();
+  contactSetBusy(true);
+  try {
+    const res = await fetch(CONTACT_PROXY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...d, turnstileToken: contactToken }),
+    });
+    let body = {};
+    try { body = await res.json(); } catch (_) {}
+    if (res.ok && body.ok) {
+      contactSetBusy(false);
+      contactShowSuccess();
+      return;
+    }
+    // The Worker's error messages are written for visitors; fall back by status.
+    let msg = typeof body.error === 'string' ? body.error : '';
+    if (!msg) {
+      if      (res.status === 429) msg = 'Too many submissions. Please try again later.';
+      else if (res.status === 403) msg = 'Your request could not be verified. Please complete the check again and resubmit.';
+      else if (res.status === 400) msg = 'Please check the form and try again.';
+      else                         msg = 'Sorry, your message could not be sent right now. Please try again later.';
+    }
+    contactSetBusy(false);
+    contactShowError(msg, body.field);
+  } catch (_) {
+    contactSetBusy(false);
+    contactShowError('Network error. Please check your connection and try again.');
+  } finally {
+    contactResetTurnstile();
+  }
+}
+
+/** Esc closes the modal; Tab cycles within it while it is open. */
+function contactKeydown(e) {
+  if (!contactIsOpen) return;
+  if (e.key === 'Escape') { e.preventDefault(); contactClose(); return; }
+  if (e.key !== 'Tab') return;
+  const items = [...contactEl('backdrop').querySelectorAll('button, input, textarea')]
+    .filter(el => !el.disabled && el.tabIndex >= 0 && el.offsetParent !== null);
+  if (!items.length) return;
+  const first = items[0], last = items[items.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+}
+
+
+/* ============================================================================
    WIRE UP AI ASSISTANT BUTTONS & BOOT
    ============================================================================ */
 
@@ -1142,6 +1467,18 @@ document.getElementById('ai-close').addEventListener('click', aiClose);
 document.getElementById('ai-backdrop').addEventListener('click', aiClose);
 document.getElementById('ai-send').addEventListener('click', aiSend);
 document.getElementById('ai-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') aiSend(); });
+
+// Contact RCT Team form
+document.querySelectorAll('[data-contact-open]').forEach(btn => btn.addEventListener('click', contactOpen));
+['close', 'cancel', 'done'].forEach(id => contactEl(id).addEventListener('click', contactClose));
+contactEl('form').addEventListener('submit', contactSubmit);
+contactEl('form').addEventListener('input', e => e.target.removeAttribute('aria-invalid'));
+// Backdrop closes only when the press also started on it, so a text-selection
+// drag that ends outside the dialog doesn't dismiss the form.
+let contactPressOnBackdrop = false;
+contactEl('backdrop').addEventListener('mousedown', e => { contactPressOnBackdrop = e.target === e.currentTarget; });
+contactEl('backdrop').addEventListener('click', e => { if (contactPressOnBackdrop && e.target === e.currentTarget) contactClose(); });
+document.addEventListener('keydown', contactKeydown);
 
 // Initial render of equipment data
 render();
