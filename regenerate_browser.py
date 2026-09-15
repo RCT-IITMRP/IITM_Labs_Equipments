@@ -488,7 +488,8 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   </div>
   <!-- Contact guidance info bar -->
   <div class="header-info-bar">
-    For additional details, please <button type="button" class="contact-rct-btn" data-contact-open>Contact RCT Team</button>. If PI name/number is available you can contact the PI. Please prefix <span class="link-color">2257</span> before the 4 digit extension number.
+    For additional details, Please contact and confirm availability with PI/Operator. Please use prefix <span class="link-color">2257</span> before the 4 digit extension number.
+    If PI/ Operator info is unavailable, please <button type="button" class="contact-rct-btn" data-contact-open>Contact Us</button>.
   </div>
   <div class="filter-bar">
 
@@ -571,7 +572,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
     </button>
   </div>
-  <div class="ai-disclaimer">AI-generated suggestions — please confirm availability with the listed contact or <button type="button" class="contact-link-btn" data-contact-open>contact the Research Collaboration Team</button>.</div>
+  <div class="ai-disclaimer">AI generated content. May not always be accurate. Please contact and confirm availability with PI/Operator. If PI/ Operator info is unavailable, please <button type="button" class="contact-link-btn" data-contact-open>contact us</button>.</div>
 </div>
 
 <!-- Contact RCT Team — form modal. Submissions go to the Worker's /contact
@@ -580,8 +581,8 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   <div class="contact-dialog" role="dialog" aria-modal="true" aria-labelledby="contact-title" aria-describedby="contact-desc">
     <div class="contact-head">
       <div class="contact-head-text">
-        <h2 id="contact-title">Contact RCT Team</h2>
-        <p id="contact-desc">Research Collaboration Team · we'll reply by email</p>
+        <h2 id="contact-title">Contact Us</h2>
+        <p id="contact-desc">Please share the following info we will respond via email.</p>
       </div>
       <button type="button" class="ai-close" id="contact-close" aria-label="Close contact form">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
