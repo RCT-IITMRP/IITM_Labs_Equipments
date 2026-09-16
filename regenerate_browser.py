@@ -595,15 +595,15 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
         <input type="text" id="contact-name" name="name" maxlength="100" autocomplete="name" required>
       </div>
       <div class="contact-field">
+        <label for="contact-title">Title/Designation <span class="req" aria-hidden="true">*</span></label>
+        <input type="text" id="contact-title" name="name" maxlength="200" autocomplete="title" required>
+      </div>
+      <div class="contact-field">
         <label for="contact-email">Email <span class="req" aria-hidden="true">*</span></label>
         <input type="email" id="contact-email" name="email" maxlength="254" autocomplete="email" required>
       </div>
       <div class="contact-field">
-        <label for="contact-company">Company Name <span class="req" aria-hidden="true">*</span></label>
-        <input type="text" id="contact-company" name="company" maxlength="150" autocomplete="organization" required>
-      </div>
-      <div class="contact-field">
-        <label for="contact-message">Message <span class="opt">(optional)</span></label>
+        <label for="contact-message">Message <span class="req" aria-hidden="true">* (Max 5000 words)</span></label>
         <textarea id="contact-message" name="message" maxlength="5000" rows="5" placeholder="Equipment or facility you're interested in, timelines, etc."></textarea>
       </div>
       <!-- Honeypot: hidden from people, often filled in by bots -->
