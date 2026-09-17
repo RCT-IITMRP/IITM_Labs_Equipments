@@ -1,0 +1,14 @@
+# Private handover notes — never commit
+HANDOVER-PRIVATE.md
+
+# Local credentials
+iitm-worker/.dev.vars
+
+# Dependencies and build caches
+node_modules/
+.wrangler/
+.venv/
+__pycache__/
+
+# OS noise
+.DS_Store

@@ -1,0 +1,16 @@
+# Copy to .dev.vars for `wrangler dev` — .dev.vars is git-ignored; never commit it.
+
+# Cloudflare's always-pass Turnstile test secret (pairs with the test site key
+# 1x00000000000000000000AA). Never use test keys in production.
+TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA
+
+# Only needed when CONTACT_DRY_RUN is not 1.
+GMAIL_USER=your-website-address@gmail.com
+GMAIL_APP_PASSWORD=abcd efgh ijkl mnop
+CONTACT_TO_EMAIL=you@example.com
+
+# Let a locally served page (python3 -m http.server 8000) call the dev Worker.
+DEV_ALLOWED_ORIGIN=http://localhost:8000
+
+# 1 = log the email to the console instead of sending it.
+CONTACT_DRY_RUN=1

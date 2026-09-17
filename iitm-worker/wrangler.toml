@@ -1,0 +1,36 @@
+name = "iitm-equipment-assistant"
+main = "worker.js"
+compatibility_date = "2026-06-01"
+# worker-mailer (contact form SMTP client) needs Node.js compatibility APIs.
+compatibility_flags = ["nodejs_compat"]
+
+# Non-sensitive — fine to commit. The model name is just a string, not a secret.
+[vars]
+GEMINI_MODEL = "gemini-2.5-flash"
+
+# Contact form: burst limit per visitor IP — 3 submissions per 60 seconds.
+# Permissive and per Cloudflare location by design; Turnstile and the daily
+# KV caps below are the stronger controls.
+[[ratelimits]]
+name = "CONTACT_RATE_LIMITER"
+namespace_id = "1001"
+
+  [ratelimits.simple]
+  limit = 3
+  period = 60
+
+# Contact form: per-IP and global daily submission counters.
+# Create once with:  wrangler kv namespace create CONTACT_KV
+# and paste the printed id below (the id is not a secret).
+[[kv_namespaces]]
+binding = "CONTACT_KV"
+id = "197f66b890ca480e800064ca17ddbc7f"
+
+# Secrets are NOT set here. Each is set with `wrangler secret put <NAME>`,
+# which stores it encrypted on Cloudflare's side — it never appears in this
+# file, in your repo, or in the deployed Worker's source:
+#   GEMINI_API_KEY        AI assistant
+#   TURNSTILE_SECRET_KEY  contact form — Turnstile widget secret
+#   GMAIL_USER            contact form — the website's dedicated Gmail address
+#   GMAIL_APP_PASSWORD    contact form — Google App Password for that account
+#   CONTACT_TO_EMAIL      contact form — destination (team inbox) address

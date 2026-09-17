@@ -1,0 +1,8 @@
+{
+  "name": "iitm-equipment-assistant",
+  "private": true,
+  "description": "Cloudflare Worker: Gemini proxy for the AI assistant + contact form mailer",
+  "dependencies": {
+    "worker-mailer": "1.2.1"
+  }
+}
