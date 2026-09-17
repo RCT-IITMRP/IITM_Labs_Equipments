@@ -225,11 +225,23 @@ python3 -c "import re;open('/tmp/page.js','w').write(re.search(r'<script>\n(.*?)
 
 ---
 
-## 10. Accounts that must change hands
+## 10. Account ownership
 
-Ownership of the GitHub account, the Cloudflare account, the sending Gmail account, the Gemini
-API key, the Turnstile widget and the workbook link is listed with step-by-step transfer
-instructions in **`HANDOVER-PRIVATE.md`**, given to the team lead directly.
+As of the handover on 18 September 2026, every account this project depends on is owned by the
+team. Nothing is tied to the departing intern:
 
-Most urgent: the contact form currently sends through a **personal Gmail account**. It must be
-replaced with a team-owned account, or the form will stop working when that account changes.
+| Thing | Owned by |
+|---|---|
+| GitHub account `RCT-IITMRP` (repo + published site) | Team |
+| Cloudflare account (Worker, KV, Turnstile) | `dharman@respark.iitm.ac.in` |
+| Sending Gmail account + app password | Team lead |
+| Gemini API key | Team lead's Google account |
+| Data workbook + its share link | Team lead's OneDrive |
+| Destination inbox (`CONTACT_TO_EMAIL`) | Team |
+
+Secret **names** are listed in section 5; their values live only in Cloudflare and in the GitHub
+Actions secret `ONEDRIVE_EXCEL_URL`. To change any of them:
+
+```bash
+cd iitm-worker && wrangler secret put <NAME>     # prompts for the value, never stored in git
+```
